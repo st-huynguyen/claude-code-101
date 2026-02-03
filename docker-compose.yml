@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: claude-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-claude}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '${POSTGRES_PORT:-5433}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - claude-network
+
+  # Next.js Web Application
+  webapp:
+    build:
+      context: .
+      dockerfile: docker/local/Dockerfile
+    container_name: claude-webapp
+    ports:
+      - '${APP_PORT:-3000}:3000'
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-claude}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - claude-network
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+
+networks:
+  claude-network:
+    driver: bridge
