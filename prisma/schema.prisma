@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma schema for eSIM E-commerce application
 
 generator client {
   provider = "prisma-client"
@@ -11,4 +7,142 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// Enums
+enum OrderStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+enum EsimStatus {
+  pending
+  active
+  expired
+}
+
+// Models
+model Vendor {
+  id        String    @id @default(cuid())
+  name      String
+  logoUrl   String?   @map("logo_url")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  products  Product[]
+
+  @@map("vendor")
+}
+
+model Product {
+  id           String      @id @default(cuid())
+  name         String
+  description  String?
+  vendorId     String      @map("vendor_id")
+  dataAmountGb Decimal     @map("data_amount_gb") @db.Decimal(10, 2)
+  validityDays Int         @map("validity_days")
+  coverage     String
+  priceCents   Int         @map("price_cents")
+  currency     String      @default("USD")
+  isActive     Boolean     @default(true) @map("is_active")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  vendor       Vendor      @relation(fields: [vendorId], references: [id])
+  orderItems   OrderItem[]
+
+  @@index([vendorId])
+  @@index([isActive])
+  @@map("product")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  orders    Order[]
+
+  @@map("customer")
+}
+
+model Order {
+  id                      String           @id @default(cuid())
+  orderNumber             String           @unique @map("order_number")
+  customerId              String           @map("customer_id")
+  status                  OrderStatus      @default(pending)
+  subtotalCents           Int              @map("subtotal_cents")
+  totalCents              Int              @map("total_cents")
+  currency                String           @default("USD")
+  stripePaymentIntentId   String?          @unique @map("stripe_payment_intent_id")
+  stripeCheckoutSessionId String?          @map("stripe_checkout_session_id")
+  paidAt                  DateTime?        @map("paid_at")
+  createdAt               DateTime         @default(now()) @map("created_at")
+  updatedAt               DateTime         @updatedAt @map("updated_at")
+  customer                Customer         @relation(fields: [customerId], references: [id])
+  orderItems              OrderItem[]
+  magicLinkTokens         MagicLinkToken[]
+
+  @@index([customerId])
+  @@map("order")
+}
+
+model OrderItem {
+  id             String   @id @default(cuid())
+  orderId        String   @map("order_id")
+  productId      String   @map("product_id")
+  quantity       Int      @default(1)
+  unitPriceCents Int      @map("unit_price_cents")
+  createdAt      DateTime @default(now()) @map("created_at")
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product        Product  @relation(fields: [productId], references: [id])
+  esim           Esim?
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_item")
+}
+
+model Esim {
+  id             String     @id @default(cuid())
+  orderItemId    String     @unique @map("order_item_id")
+  iccid          String?    @unique
+  qrCodeData     String?    @map("qr_code_data")
+  activationCode String?    @map("activation_code")
+  smdpAddress    String?    @map("smdp_address")
+  status         EsimStatus @default(pending)
+  activatedAt    DateTime?  @map("activated_at")
+  expiresAt      DateTime?  @map("expires_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  orderItem      OrderItem  @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+
+  @@map("esim")
+}
+
+model MagicLinkToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  orderId   String    @map("order_id")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  order     Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("magic_link_token")
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String    @map("password_hash")
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("admin_user")
 }
