@@ -44,6 +44,7 @@ features/          # Business domains (vertical slices)
       └── constants.ts
 shared/            # Domain-agnostic shared code
   ├── ui/          # shadcn/ui components
+  ├── components/  # App-level shared components (Header, Footer, etc.)
   ├── hooks/       # Shared React hooks
   ├── utils/       # Pure utility functions
   └── constants/   # App-wide constants
@@ -62,45 +63,40 @@ docker/            # Docker configuration
 Page (Server Component) → Action → Service → Prisma → Database
 ```
 
-- **Pages** (`app/`) call Server Actions directly
-- **Actions** (`features/*/actions/`) are thin wrappers with `"use server"`
-- **Services** (`features/*/services/`) contain business logic and Prisma queries
+- **Pages** (`app/`) — server pages can call services directly; client components call actions
+- **Actions** (`features/*/actions/`) — thin wrappers with `"use server"`
+- **Services** (`features/*/services/`) — business logic and Prisma queries
 - **Prisma client** singleton in `lib/db/prisma.ts`
 
-### Cross-Feature Imports
+### Import Rules
 
-Each feature exposes a public API via `index.ts` (barrel export). Other features **only** import through the barrel — never reach into internal files.
-
-```
-features/product/
-  index.ts              ← public API
-  services/getProduct.ts
-  components/ProductForm.tsx  ← internal, not exported
-```
+Import feature files directly by path. No barrel exports (`index.ts`).
 
 ```ts
-// features/product/index.ts
-export { getProduct } from './services/getProduct';
-export type { ProductWithVendor } from './types';
+// Pages can import any feature's files directly
+import { getProducts } from '@/features/product/services/get-products';
+import type { Product } from '@/features/product/types';
+import ProductList from '@/features/product/components/product-list';
 ```
 
-```ts
-// features/order/services/createOrder.ts
-import { getProduct } from '@/features/product'; // ✅ through barrel
-import { getProduct } from '@/features/product/services/getProduct'; // ❌ internal
-```
+Cross-feature component imports are not allowed. If a component is needed by multiple features, move it to `shared/ui/` or `shared/components/`.
 
 ### Component Locations
 
-- `app/route/_components/` — Layout/composition components that wire page-level concerns (data fetching result → domain component, toolbar positioning, page-specific wrappers)
-- `features/domain/components/` — Reusable domain UI (ProductCard, OrderTable) used across multiple routes or exported via the feature barrel
-- `shared/ui/` — Generic, domain-agnostic UI (Button, Input, Modal) from shadcn/ui
+- `app/<route>/_components/` — Thin wrapper functions for page-level composition (no business logic)
+- `features/<domain>/components/` — Domain-specific UI (ProductCard, OrderTable)
+- `shared/components/` — App-level shared components used across many pages (Header, Footer, Sidebar)
+- `shared/ui/` — shadcn/ui primitives (Button, Input, Modal)
 
 ### Route-Level Files
 
 - Add `loading.tsx` to any route segment that fetches data
 - Add `error.tsx` to top-level layout segments (`app/`, `app/admin/`)
 - Add `not-found.tsx` for custom 404 pages (e.g., invalid magic link tokens)
+
+### File Naming
+
+All files use lowercase kebab-case: `product-card.tsx`, `use-cart.ts`, `get-products.ts`, `create-order.ts`.
 
 ### Conventions
 
