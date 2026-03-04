@@ -9,6 +9,8 @@ npm run dev       # Start development server at localhost:3000
 npm run build     # Build production bundle
 npm start         # Start production server (requires build first)
 npm run lint      # Run ESLint
+npm test          # Run all tests (vitest)
+npm run test:watch # Run tests in watch mode
 ```
 
 ### Docker Development
@@ -109,3 +111,14 @@ All files use lowercase kebab-case: `product-card.tsx`, `use-cart.ts`, `get-prod
 - `app/api/` is for API routes (webhooks, health checks)
 - Dark mode is handled via CSS variables and `prefers-color-scheme`
 - Images use Next.js `Image` component for optimization
+
+## Verification (Post-Implementation)
+
+After implementing any feature or change, **always** run lint and tests in parallel using subagents before reporting completion. This is a mandatory final step in every plan.
+
+```
+Step N (final): Verify — run `npm run lint` and `npm test` in parallel via subagents
+```
+
+- If either fails, fix the issues before marking the task as done
+- Test files are co-located with source files using `.test.ts` / `.test.tsx` suffix
