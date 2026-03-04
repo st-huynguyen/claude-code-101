@@ -14,7 +14,7 @@ npm run lint      # Run ESLint
 ### Docker Development
 
 ```bash
-docker-compose up --build    # Start all services (db + webapp)
+docker compose up -d --build # Start all services (db + webapp)
 docker-compose down          # Stop all services
 docker-compose logs -f       # View logs
 ```
