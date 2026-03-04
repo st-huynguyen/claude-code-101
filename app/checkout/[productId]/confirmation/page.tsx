@@ -7,11 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { getOrderById } from '@/features/order/services/get-order';
 
 interface ConfirmationPageProps {
-  searchParams: Promise<{ orderId?: string }>;
+  searchParams: Promise<{ orderId?: string; manageToken?: string }>;
 }
 
 export default async function ConfirmationPage({ searchParams }: ConfirmationPageProps) {
-  const { orderId } = await searchParams;
+  const { orderId, manageToken } = await searchParams;
 
   if (!orderId) {
     notFound();
@@ -25,6 +25,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
 
   const orderItem = order.orderItems[0];
   const product = orderItem?.product;
+  const esim = orderItem?.esim;
 
   const totalFormatted = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -38,7 +39,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
           ✓
         </div>
         <h1 className="text-3xl font-bold">Order Confirmed!</h1>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-muted-foreground mt-2">
           Thank you for your purchase. A confirmation has been sent to {order.customer.email}.
         </p>
       </div>
@@ -75,7 +76,33 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
         </CardContent>
       </Card>
 
-      <div className="text-center">
+      {esim && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>eSIM Activation</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-center">
+              <p className="mb-1 text-xs tracking-wider text-blue-700 uppercase">Activation Code</p>
+              <p className="font-mono text-lg font-bold tracking-widest text-blue-900">
+                {esim.activationCode}
+              </p>
+              {esim.smdpAddress && (
+                <p className="text-muted-foreground mt-2 text-xs">
+                  SMDP Address: {esim.smdpAddress}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="flex justify-center gap-3">
+        {manageToken && (
+          <Button asChild variant="outline">
+            <Link href={`/manage/${manageToken}`}>Manage Your eSIM</Link>
+          </Button>
+        )}
         <Button asChild>
           <Link href="/products">Browse More Plans</Link>
         </Button>

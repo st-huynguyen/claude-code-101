@@ -24,7 +24,9 @@ export default function CheckoutForm({ productId }: CheckoutFormProps) {
 
   useEffect(() => {
     if (state?.success && state.orderId) {
-      router.push(`/checkout/${productId}/confirmation?orderId=${state.orderId}`);
+      const params = new URLSearchParams({ orderId: state.orderId });
+      if (state.manageToken) params.set('manageToken', state.manageToken);
+      router.push(`/checkout/${productId}/confirmation?${params.toString()}`);
     }
   }, [state, productId, router]);
 
@@ -44,9 +46,7 @@ export default function CheckoutForm({ productId }: CheckoutFormProps) {
             <Label htmlFor="email">Email</Label>
             <Input id="email" name="email" type="email" placeholder="john@example.com" required />
           </div>
-          {state?.error && (
-            <p className="text-sm text-destructive">{state.error}</p>
-          )}
+          {state?.error && <p className="text-destructive text-sm">{state.error}</p>}
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? 'Processing...' : 'Complete Purchase'}
           </Button>
