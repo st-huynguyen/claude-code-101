@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# eSIM E-commerce
+
+An e-commerce platform for purchasing eSIM data plans, built with Next.js 16, React 19, and Tailwind CSS 4.
+
+## Tech Stack
+
+- **Next.js 16** — App Router with server components
+- **React 19** — with TypeScript (strict mode)
+- **Tailwind CSS 4** — styling with shadcn/ui components
+- **Prisma 7** — PostgreSQL ORM
+- **Zod** — schema validation
+- **React Hook Form** — form handling
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- Docker & Docker Compose
+
+### Docker Development (recommended)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up -d --build # Start PostgreSQL + webapp
+docker compose down          # Stop all services
+docker compose logs -f       # View logs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at [http://localhost:3000](http://localhost:3000) with PostgreSQL on port 5433.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx prisma migrate dev       # Run migrations
+npx prisma db seed            # Seed sample data
+npm run prisma:generate       # Regenerate Prisma client
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/               # Next.js pages and layouts
+features/          # Business domains (vertical slices)
+  └── <domain>/
+      ├── actions/       # Server Actions
+      ├── components/    # Domain-specific UI
+      ├── hooks/         # Client logic
+      ├── services/      # Business logic + Prisma queries
+      └── types.ts
+shared/            # Domain-agnostic shared code
+  ├── ui/          # shadcn/ui primitives
+  ├── components/  # App-level shared components
+  ├── hooks/       # Shared React hooks
+  └── utils/       # Pure utility functions
+lib/db/            # Prisma client singleton
+prisma/            # Schema and migrations
+docker/            # Docker configuration
+```
