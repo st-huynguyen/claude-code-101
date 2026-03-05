@@ -21,7 +21,18 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
       <h1 className="mb-6 text-3xl font-bold">Checkout</h1>
       <div className="grid gap-6 md:grid-cols-2">
         <OrderSummary product={product} />
-        <CheckoutForm productId={productId} />
+        <CheckoutForm
+          productId={productId}
+          productName={product.name}
+          priceCents={product.priceCents}
+          currency={product.currency}
+          dataAmountGb={
+            typeof product.dataAmountGb === 'number'
+              ? product.dataAmountGb
+              : product.dataAmountGb.toNumber()
+          }
+          validityDays={product.validityDays}
+        />
       </div>
     </main>
   );
