@@ -10,10 +10,15 @@ Fetch GitHub issue CC-$ARGUMENTS from the repository and create an implementatio
 
 3. **In plan mode**, thoroughly explore the codebase to understand the relevant code, then create a detailed implementation plan based on the issue requirements.
 
-4. **The final step of every plan must be a verification step** that runs lint and tests **in parallel using subagents**:
+4. **The final step of every plan must be a verification step** that runs lint and tests **in parallel using the dedicated agents**:
 
 ```
-Step N (final): Verify — run `npm run lint` and `npm test` in parallel via subagents
+Step N (final): Verify — run `lint-checker` and `unit-test-runner` agents in parallel
 ```
+
+Use the Agent tool to launch both agents simultaneously:
+
+- `lint-checker` agent to check for and fix any linting errors
+- `unit-test-runner` agent to run unit tests and fix any failures
 
 This verification step is mandatory and must always be the last step in the plan.
