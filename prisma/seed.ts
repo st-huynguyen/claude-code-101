@@ -128,6 +128,44 @@ async function main() {
   );
   console.log(`✓ Created ${orders.length} orders with order items, eSIMs, and magic links`);
 
+  // 4b. Create an additional order with a deterministic magic link token for e2e tests
+  const e2eOrder = await prisma.order.create({
+    data: {
+      orderNumber: 'ORD-E2E-001',
+      customerId: customers[4].id,
+      status: OrderStatus.paid,
+      subtotalCents: products[0].priceCents,
+      totalCents: products[0].priceCents,
+      currency: 'USD',
+      paidAt: new Date(),
+      orderItems: {
+        create: {
+          productId: products[0].id,
+          quantity: 1,
+          unitPriceCents: products[0].priceCents,
+          esim: {
+            create: {
+              iccid: '89840123456789019999',
+              qrCodeData: 'LPA:1$smdp.example.com$ACTIVATION_CODE_E2E',
+              activationCode: 'ACT-E2E-0001',
+              smdpAddress: 'smdp.example.com',
+              status: EsimStatus.active,
+              activatedAt: new Date(),
+              expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            },
+          },
+        },
+      },
+      magicLinkTokens: {
+        create: {
+          token: 'e2e-test-token',
+          expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
+        },
+      },
+    },
+  });
+  console.log(`✓ Created e2e test order: ${e2eOrder.orderNumber}`);
+
   // 5. Create Admin User
   const adminUser = await prisma.adminUser.create({
     data: {

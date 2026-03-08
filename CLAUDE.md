@@ -5,12 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development Commands
 
 ```bash
-npm run dev       # Start development server at localhost:3000
-npm run build     # Build production bundle
-npm start         # Start production server (requires build first)
-npm run lint      # Run ESLint
-npm test          # Run all tests (vitest)
-npm run test:watch # Run tests in watch mode
+npm run dev          # Start development server at localhost:3000
+npm run build        # Build production bundle
+npm start            # Start production server (requires build first)
+npm run lint         # Run ESLint
+npm test             # Run all unit tests (vitest)
+npm run test:watch   # Run unit tests in watch mode
+npm run test:e2e     # Run e2e tests (Playwright, requires dev server + DB)
+npm run test:e2e:ui  # Run e2e tests with Playwright UI
 ```
 
 ### Docker Development
@@ -28,6 +30,8 @@ docker-compose logs -f       # View logs
 - **Tailwind CSS 4** for styling
 - **shadcn/ui** for UI components
 - **Prisma** for database ORM
+- **Playwright** for e2e testing (Chromium)
+- **Vitest** for unit/integration testing
 - **Geist font family** (sans-serif and monospace)
 
 ## Architecture
@@ -57,6 +61,10 @@ lib/               # Infrastructure only (db, auth, config, integrations)
 prisma/            # Prisma schema and migrations
 docker/            # Docker configuration
   └── local/       # Local development Dockerfile
+e2e/               # Playwright e2e tests
+  ├── global-setup.ts      # DB reset + seed before tests
+  ├── fixtures/            # Test data constants
+  └── *.spec.ts            # Test specs
 ```
 
 ### Data Flow Pattern
@@ -121,4 +129,7 @@ Step N (final): Verify — run `npm run lint` and `npm test` in parallel via sub
 ```
 
 - If either fails, fix the issues before marking the task as done
-- Test files are co-located with source files using `.test.ts` / `.test.tsx` suffix
+- Unit test files are co-located with source files using `.test.ts` / `.test.tsx` suffix
+- E2e tests live in `e2e/` directory using `.spec.ts` suffix
+- E2e tests use a separate `claude_e2e` database (configured via `.env.test`) to avoid affecting the dev database
+- E2e test data constants are in `e2e/fixtures/test-data.ts` and must stay in sync with `prisma/seed.ts`

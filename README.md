@@ -10,6 +10,8 @@ An e-commerce platform for purchasing eSIM data plans, built with Next.js 16, Re
 - **Prisma 7** — PostgreSQL ORM
 - **Zod** — schema validation
 - **React Hook Form** — form handling
+- **Vitest** — unit/integration testing
+- **Playwright** — e2e testing (Chromium)
 
 ## Getting Started
 
@@ -55,4 +57,36 @@ shared/            # Domain-agnostic shared code
 lib/db/            # Prisma client singleton
 prisma/            # Schema and migrations
 docker/            # Docker configuration
+e2e/               # Playwright e2e tests
 ```
+
+## Testing
+
+### Unit Tests
+
+Unit tests use Vitest with jsdom. Test files are co-located with source files (`.test.ts` / `.test.tsx`).
+
+```bash
+npm test             # Run all unit tests
+npm run test:watch   # Watch mode
+```
+
+### E2E Tests
+
+E2e tests use Playwright with Chromium. They run against a separate `claude_e2e` database (configured in `.env.test`) to avoid affecting dev data.
+
+**First-time setup:**
+
+```bash
+npx playwright install --with-deps chromium
+PGPASSWORD=postgres psql -h localhost -p 5433 -U postgres -c "CREATE DATABASE claude_e2e;"
+```
+
+**Running:**
+
+```bash
+npm run test:e2e        # Headless
+npm run test:e2e:ui     # With Playwright UI
+```
+
+The global setup automatically resets and seeds the `claude_e2e` database before each run.
