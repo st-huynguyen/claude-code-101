@@ -6,19 +6,22 @@ const steps = [
   {
     step: 1,
     title: 'Choose Your Plan',
-    description: 'Browse our selection of eSIM plans and pick the one that fits your destination and data needs.',
+    description:
+      'Browse our selection of eSIM plans and pick the one that fits your destination and data needs.',
     icon: Search,
   },
   {
     step: 2,
     title: 'Purchase & Download',
-    description: 'Complete your purchase and receive your eSIM profile instantly via QR code or direct install.',
+    description:
+      'Complete your purchase and receive your eSIM profile instantly via QR code or direct install.',
     icon: ShoppingCart,
   },
   {
     step: 3,
     title: 'Activate & Connect',
-    description: 'Scan the QR code with your phone, activate the plan, and start using data right away.',
+    description:
+      'Scan the QR code with your phone, activate the plan, and start using data right away.',
     icon: Zap,
   },
 ];
@@ -29,7 +32,7 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-bold tracking-tight">How It Works</h2>
-          <p className="mt-3 text-muted-foreground">Get connected in three simple steps</p>
+          <p className="text-muted-foreground mt-3">Get connected in three simple steps</p>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {steps.map(({ step, title, description, icon: Icon }) => (
@@ -40,13 +43,13 @@ export default function HowItWorks() {
                     <Icon className="size-5" />
                   </Badge>
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs text-muted-foreground">Step {step}</span>
+                    <span className="text-muted-foreground text-xs">Step {step}</span>
                     <CardTitle className="text-lg">{title}</CardTitle>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">{description}</p>
+                <p className="text-muted-foreground text-sm">{description}</p>
               </CardContent>
             </Card>
           ))}

@@ -10,7 +10,7 @@ export default function ProductList({ products }: ProductListProps) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <p className="text-lg font-medium">No products found</p>
-        <p className="text-sm text-muted-foreground">Try adjusting your filters</p>
+        <p className="text-muted-foreground text-sm">Try adjusting your filters</p>
       </div>
     );
   }

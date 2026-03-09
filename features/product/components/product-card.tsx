@@ -30,7 +30,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         </CardHeader>
         <CardContent className="flex-1">
           {product.description && (
-            <p className="text-sm text-muted-foreground">{product.description}</p>
+            <p className="text-muted-foreground text-sm">{product.description}</p>
           )}
           <div className="mt-3 flex flex-col gap-1 text-sm">
             <div className="flex justify-between">

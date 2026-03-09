@@ -8,9 +8,9 @@ export default function HeroSection() {
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           Stay Connected <br className="hidden sm:inline" /> Anywhere in the World
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Instant eSIM plans for 190+ countries. No physical SIM needed &mdash; activate
-          your data plan in minutes and enjoy seamless connectivity wherever you travel.
+        <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-lg">
+          Instant eSIM plans for 190+ countries. No physical SIM needed &mdash; activate your data
+          plan in minutes and enjoy seamless connectivity wherever you travel.
         </p>
         <div className="mt-8 flex items-center justify-center gap-4">
           <Button asChild size="lg">

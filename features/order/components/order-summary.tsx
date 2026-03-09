@@ -24,7 +24,7 @@ export default function OrderSummary({ product }: OrderSummaryProps) {
           <Badge variant="secondary">{Number(product.dataAmountGb)}GB</Badge>
         </div>
         {product.description && (
-          <p className="text-sm text-muted-foreground">{product.description}</p>
+          <p className="text-muted-foreground text-sm">{product.description}</p>
         )}
         <div className="flex flex-col gap-1 text-sm">
           <div className="flex justify-between">
