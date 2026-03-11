@@ -125,7 +125,7 @@ All files use lowercase kebab-case: `product-card.tsx`, `use-cart.ts`, `get-prod
 After implementing any feature or change, **always** run lint and tests in parallel using subagents before reporting completion. This is a mandatory final step in every plan.
 
 ```
-Step N (final): Verify — run `npm run lint` and `npm test` in parallel via subagents
+Step N (final): Verify — run `npm run lint`, `npm test`, and `npm run test:e2e` in parallel via subagents
 ```
 
 - If either fails, fix the issues before marking the task as done
