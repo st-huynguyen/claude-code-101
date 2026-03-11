@@ -1,24 +1,77 @@
-# Create Plan from GitHub Issue
+# Development Planning
 
-Fetch GitHub issue CC-$ARGUMENTS from the repository and create an implementation plan.
+Fetch GitHub issue CC-$ARGUMENTS from the repository, checkout a working branch, then create a detailed implementation plan including parallel execution strategy and commit plan.
 
-## Steps
+## Step 1: Process GitHub Issue
 
-1. **Fetch the GitHub issue** by running: `gh issue view CC-$ARGUMENTS` to get the issue title, body, and labels.
+Fetch the GitHub issue by running: `gh issue view CC-$ARGUMENTS` to get the issue title, body, and labels.
 
-2. **Enter plan mode** using the EnterPlanMode tool to design the implementation approach.
+## Step 2: Checkout Branch
 
-3. **In plan mode**, thoroughly explore the codebase to understand the relevant code, then create a detailed implementation plan based on the issue requirements.
+Create and checkout a new branch for this issue:
 
-4. **The final step of every plan must be a verification step** that runs lint and tests **in parallel using the dedicated agents**:
-
-```
-Step N (final): Verify — run `lint-checker` and `unit-test-runner` agents in parallel
+```bash
+git checkout -b CC-$ARGUMENTS
 ```
 
-Use the Agent tool to launch both agents simultaneously:
+If the branch already exists, switch to it with `git checkout CC-$ARGUMENTS`.
 
-- `lint-checker` agent to check for and fix any linting errors
-- `unit-test-runner` agent to run unit tests and fix any failures
+## Step 3: Codebase Investigation
 
-This verification step is mandatory and must always be the last step in the plan.
+Investigate the following to inform the plan. Run parallel execution when investigations are independent:
+
+- Related files and code locations
+- Existing implementation patterns
+- Potentially affected areas
+
+## Step 4: Create Plan
+
+Use the EnterPlanMode tool to design the implementation approach and create a plan in markdown containing:
+
+### 4.1 Requirements Understanding
+
+- Overview of the feature to implement
+- Goal (what becomes possible)
+
+### 4.2 Impact Scope
+
+- List of files to change (with paths)
+- Existing features that may be affected
+
+### 4.3 Implementation Steps (with Commit Plan)
+
+Each step should include:
+
+- Specific work to be done
+- Commit point: commit when this step is complete (include proposed commit message)
+
+Create unit tests and e2e tests if applicable.
+
+### 4.4 Parallel Execution Plan (Task-level)
+
+- Identify implementation tasks that can be executed independently
+- Describe agent split proposal for parallel execution
+
+## Step 5: Verification Flow
+
+Run the following checks in parallel using sub agents:
+
+1. **Lint**: `lint-fixer` agent
+2. **Unit Test**: `unit-test-fixer` agent
+3. **E2E Test**: `e2e-test-fixer` agent
+
+## Step 6: User Confirmation (Required)
+
+After outputting the plan in chat, display the following message and **wait for the user's response** before proceeding with implementation:
+
+> Shall I proceed with the plan above? Let me know if you'd like any changes.
+
+**Important**: Do not proceed with implementation without explicit user confirmation.
+
+## Key Rules
+
+- Write the plan in specific and actionable terms
+- Plan commits in reviewable units
+- Explicitly indicate sections that can run in parallel
+- Do not skip the verification flow
+- After verification passes, ask the user to commit using the commit points from the plan (do not silently skip this step)
