@@ -120,15 +120,43 @@ All files use lowercase kebab-case: `product-card.tsx`, `use-cart.ts`, `get-prod
 - Dark mode is handled via CSS variables and `prefers-color-scheme`
 - Images use Next.js `Image` component for optimization
 
+## Agents
+
+Specialized subagents in `.claude/agents/` for delegating verification tasks:
+
+| Agent             | Purpose                                                                | Trigger                                                  |
+| ----------------- | ---------------------------------------------------------------------- | -------------------------------------------------------- |
+| `lint-fixer`      | Runs Prettier + ESLint, fixes errors in branch-changed files only      | After writing/modifying code                             |
+| `unit-test-fixer` | Runs `npm test`, analyzes and fixes failures related to branch changes | After implementing logic (services, components, actions) |
+| `e2e-test-fixer`  | Runs Playwright e2e tests, fixes failures related to branch changes    | After completing a feature with e2e coverage             |
+
+## Slash Commands
+
+Custom commands in `.claude/commands/`:
+
+| Command         | Purpose                                                        |
+| --------------- | -------------------------------------------------------------- |
+| `/create-plan`  | Generate a development plan from a GitHub issue or requirement |
+| `/create-issue` | Create a GitHub issue from a rough requirement                 |
+| `/create-pr`    | Create a pull request from the current branch                  |
+
+## Skills
+
+Custom skills in `.claude/skills/`:
+
+| Skill                  | Purpose                                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `building-frontend-ui` | Guides building pages, components, tables, forms, and layouts following project patterns |
+
 ## Verification (Post-Implementation)
 
 After implementing any feature or change, **always** run lint and tests in parallel using subagents before reporting completion. This is a mandatory final step in every plan.
 
 ```
-Step N (final): Verify — run `npm run lint`, `npm test`, and `npm run test:e2e` in parallel via subagents
+Step N (final): Verify — run lint-fixer, unit-test-fixer, and e2e-test-fixer agents in parallel
 ```
 
-- If either fails, fix the issues before marking the task as done
+- If any agent reports failures, fix the issues before marking the task as done
 - Unit test files are co-located with source files using `.test.ts` / `.test.tsx` suffix
 - E2e tests live in `e2e/` directory using `.spec.ts` suffix
 - E2e tests use a separate `claude_e2e` database (configured via `.env.test`) to avoid affecting the dev database
