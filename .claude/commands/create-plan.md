@@ -4,17 +4,17 @@ Fetch GitHub issue CC-$ARGUMENTS from the repository, checkout a working branch,
 
 ## Step 1: Process GitHub Issue
 
-Fetch the GitHub issue by running: `gh issue view CC-$ARGUMENTS` to get the issue title, body, and labels.
+Fetch the GitHub issue by running: `gh issue view cc-$ARGUMENTS` to get the issue title, body, and labels.
 
 ## Step 2: Checkout Branch
 
 Create and checkout a new branch for this issue:
 
 ```bash
-git checkout -b CC-$ARGUMENTS
+git checkout -b cc-$ARGUMENTS
 ```
 
-If the branch already exists, switch to it with `git checkout CC-$ARGUMENTS`.
+If the branch already exists, switch to it with `git checkout cc-$ARGUMENTS`.
 
 ## Step 3: Codebase Investigation
 
@@ -43,7 +43,7 @@ Use the EnterPlanMode tool to design the implementation approach and create a pl
 Each step should include:
 
 - Specific work to be done
-- Commit point: commit when this step is complete (include proposed commit message)
+- Commit point: record the proposed commit message for this step (do not commit yet — all commits happen after verification passes)
 
 Create unit tests and e2e tests if applicable.
 
@@ -74,4 +74,4 @@ After outputting the plan in chat, display the following message and **wait for 
 - Plan commits in reviewable units
 - Explicitly indicate sections that can run in parallel
 - Do not skip the verification flow
-- After verification passes, ask the user to commit using the commit points from the plan (do not silently skip this step)
+- Do not commit during implementation — all commits happen after verification passes using the saved commit points from the plan
