@@ -43,7 +43,7 @@ Use the EnterPlanMode tool to design the implementation approach and create a pl
 Each step should include:
 
 - Specific work to be done
-- Commit point: record the proposed commit message for this step (do not commit yet — all commits happen after verification passes)
+- Commit point: **record the proposed commit message** for this step (**do not commit yet** — all commits happen after verification passes)
 
 Create unit tests and e2e tests if applicable.
 
@@ -60,18 +60,10 @@ Run the following checks in parallel using sub agents:
 2. **Unit Test**: `unit-test-fixer` agent
 3. **E2E Test**: `e2e-test-fixer` agent
 
-## Step 6: User Confirmation (Required)
-
-After outputting the plan in chat, display the following message and **wait for the user's response** before proceeding with implementation:
-
-> Shall I proceed with the plan above? Let me know if you'd like any changes.
-
-**Important**: Do not proceed with implementation without explicit user confirmation.
-
 ## Key Rules
 
 - Write the plan in specific and actionable terms
-- Plan commits in reviewable units
 - Explicitly indicate sections that can run in parallel
 - Do not skip the verification flow
 - Do not commit during implementation — all commits happen after verification passes using the saved commit points from the plan
+- **Important**: Do not proceed with implementation without explicit user confirmation.
