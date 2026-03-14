@@ -124,11 +124,13 @@ All files use lowercase kebab-case: `product-card.tsx`, `use-cart.ts`, `get-prod
 
 Specialized subagents in `.claude/agents/` for delegating verification tasks:
 
-| Agent             | Purpose                                                                | Trigger                                                  |
-| ----------------- | ---------------------------------------------------------------------- | -------------------------------------------------------- |
-| `lint-fixer`      | Runs Prettier + ESLint, fixes errors in branch-changed files only      | After writing/modifying code                             |
-| `unit-test-fixer` | Runs `npm test`, analyzes and fixes failures related to branch changes | After implementing logic (services, components, actions) |
-| `e2e-test-fixer`  | Runs Playwright e2e tests, fixes failures related to branch changes    | After completing a feature with e2e coverage             |
+| Agent                  | Purpose                                                                | Trigger                                                  |
+| ---------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------- |
+| `lint-fixer`           | Runs Prettier + ESLint, fixes errors in branch-changed files only      | After writing/modifying code                             |
+| `unit-test-fixer`      | Runs `npm test`, analyzes and fixes failures related to branch changes | After implementing logic (services, components, actions) |
+| `e2e-test-fixer`       | Runs Playwright e2e tests, fixes failures related to branch changes    | After completing a feature with e2e coverage             |
+| `quality-reviewer`     | Reviews code for TypeScript best practices, conventions, naming        | Via `/code-review` skill                                 |
+| `performance-reviewer` | Reviews code for query optimization, bundle size, rendering issues     | Via `/code-review` skill                                 |
 
 ## Slash Commands
 
@@ -147,6 +149,7 @@ Custom skills in `.claude/skills/`:
 | Skill                  | Purpose                                                                                  |
 | ---------------------- | ---------------------------------------------------------------------------------------- |
 | `building-frontend-ui` | Guides building pages, components, tables, forms, and layouts following project patterns |
+| `code-review`          | Orchestrates parallel quality + performance review before push                           |
 
 ## Verification (Post-Implementation)
 

@@ -60,6 +60,10 @@ Run the following checks in parallel using sub agents:
 2. **Unit Test**: `unit-test-fixer` agent
 3. **E2E Test**: `e2e-test-fixer` agent
 
+## Step 6: Code Review
+
+Run the `/code-review` skill to orchestrate parallel quality and performance review before reporting completion.
+
 ## Key Rules
 
 - Write the plan in specific and actionable terms
