@@ -66,7 +66,12 @@ Run the `/code-review` skill to orchestrate parallel quality and performance rev
 
 ## Step 7: Commit
 
-Commit using the commit plan from Step 4.3. If code review (Step 6) resulted in file changes that make the original commit plan inaccurate, update the commit plan first to reflect the actual changes before committing.
+Follow the commit plan from Step 4.3 **step by step** — create one commit per implementation step, staging only the files relevant to that step. Do NOT commit all changed files in a single commit.
+
+1. Review the commit plan from Step 4.3
+2. If code review (Step 6) resulted in file changes, update the commit plan first to reflect the actual changes
+3. For each step in the plan: stage only the relevant files, then commit with the planned message
+4. Verify the commit history matches the plan with `git log --oneline`
 
 ## Step 8: Create Pull Request
 
