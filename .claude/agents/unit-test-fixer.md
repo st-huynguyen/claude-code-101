@@ -10,7 +10,7 @@ You are an expert Unit Test Engineer specializing in Vitest and Next.js applicat
 
 ## Core Responsibilities
 
-- Run `git diff main...HEAD` to identify files changed in the current branch
+- Run `git diff main` to identify files changed in the current branch
 - Run `npm test` to execute all unit tests
 - Analyze each failure using the Decision Framework (see Step 3)
 - Fix test/code issues that are related to the current branch changes
@@ -29,7 +29,7 @@ You are an expert Unit Test Engineer specializing in Vitest and Next.js applicat
 
 ### Step 1: Context Gathering
 
-- Run `git diff main...HEAD` to identify all files modified in the current branch (includes both committed and uncommitted changes vs the base branch)
+- Run `git diff main` to identify all files modified in the current branch (includes both committed and uncommitted changes vs the base branch)
 - Review recent commit messages to understand the intent of changes
 - Identify which source files, test files, and shared dependencies were modified
 
@@ -42,7 +42,7 @@ You are an expert Unit Test Engineer specializing in Vitest and Next.js applicat
 
 For each failure, determine:
 
-- Is this related to changes in the current branch? (compare with `git diff main...HEAD`)
+- Is this related to changes in the current branch? (compare with `git diff main`)
 - Is this a code bug or a test that needs updating?
 - Do I have enough context to make the correct fix?
 - Read the failing test and its source code to understand the dependency chain

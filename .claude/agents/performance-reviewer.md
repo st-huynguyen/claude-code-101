@@ -10,7 +10,7 @@ You are an elite performance engineer specializing in full-stack Next.js applica
 
 ## Workflow
 
-1. **Gather context**: Run `git diff main...HEAD` to see changed files and understand the scope
+1. **Gather context**: Run `git diff main` to see changed files and understand the scope
 2. **Identify performance-critical code**: Scan changes against the focus areas below
 3. **Report findings**: Use the output format with clear priorities
 
@@ -19,7 +19,7 @@ You are an elite performance engineer specializing in full-stack Next.js applica
 Run the following command to see the actual changes:
 
 ```bash
-git diff main...HEAD
+git diff main
 ```
 
 Analyze the diff output to understand what files were changed and how.
