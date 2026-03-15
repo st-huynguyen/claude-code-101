@@ -136,11 +136,11 @@ Specialized subagents in `.claude/agents/` for delegating verification tasks:
 
 Custom commands in `.claude/commands/`:
 
-| Command         | Purpose                                                        |
-| --------------- | -------------------------------------------------------------- |
-| `/create-plan`  | Generate a development plan from a GitHub issue or requirement |
-| `/create-issue` | Create a GitHub issue from a rough requirement                 |
-| `/create-pr`    | Create a pull request from the current branch                  |
+| Command         | Purpose                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| `/implement`    | Full lifecycle: plan, implement, verify, review, commit, and create PR from a GitHub issue |
+| `/create-issue` | Create a GitHub issue from a rough requirement                                             |
+| `/create-pr`    | Create a pull request from the current branch                                              |
 
 ## Skills
 

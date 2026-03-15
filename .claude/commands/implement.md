@@ -1,6 +1,6 @@
-# Development Planning
+# Implement
 
-Fetch GitHub issue CC-$ARGUMENTS from the repository, checkout a working branch, then create a detailed implementation plan including parallel execution strategy and commit plan.
+Fetch GitHub issue CC-$ARGUMENTS from the repository, checkout a working branch, plan and implement the feature, run verification and code review, then commit and create a pull request.
 
 ## Step 1: Process GitHub Issue
 
@@ -62,7 +62,15 @@ Run the following checks in parallel using sub agents:
 
 ## Step 6: Code Review
 
-Run the `/code-review` skill to orchestrate parallel quality and performance review before reporting completion.
+Run the `/code-review` skill to orchestrate parallel quality and performance review. If code review results in file changes, re-run Step 5 (Verification Flow) to ensure the changes don't break the app.
+
+## Step 7: Commit
+
+Commit using the commit plan from Step 4.3. If code review (Step 6) resulted in file changes that make the original commit plan inaccurate, update the commit plan first to reflect the actual changes before committing.
+
+## Step 8: Create Pull Request
+
+Run the `/create-pr` command to push the branch and create a pull request.
 
 ## Key Rules
 
