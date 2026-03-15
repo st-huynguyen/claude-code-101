@@ -17,7 +17,7 @@ Gather all context about the current branch changes:
 
 1. Run `git diff --name-only main` to list all changed files
 2. Run `git log main..HEAD --oneline` to see commit history on the branch
-3. Extract the issue number from the branch name (e.g. `feature/123-add-cart` → `123`), then run `gh issue view <number>` to get the issue title, description, and acceptance criteria
+3. If GitHub issue context is already available from `/create-plan`, reuse it. Otherwise, extract the issue number from the branch name (e.g. `feature/123-add-cart` → `123`) and run `gh issue view <number>`
 
 ### Step 2: Parallel Review
 
